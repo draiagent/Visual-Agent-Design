@@ -1,0 +1,74 @@
+{
+  "card_id": "VAC-DATA-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "數據分析",
+    "primary_goal": "對提供的CSV或Excel資料完成可重現的分析，輸出至少三張核心圖表、重點洞察與建議。",
+    "target_user": "管理者、研究者或業務決策者",
+    "completion_definition": "計算可重算、圖表標示完整、結論與資料一致，輸出清理檔與分析報告。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["CSV或Excel資料檔", "欄位說明或資料字典", "分析問題"],
+    "optional": ["時間區間", "統計需求", "指標定義", "分群條件", "既有報表或比較基準"],
+    "forbidden": ["未經授權的個資明細", "捏造的資料欄位或數值"],
+    "missing_asset_policy": {
+      "data_file": "缺資料檔即停止。",
+      "data_dictionary": "先掃描欄位並標記不確定欄位，不自行猜測商業語意。",
+      "analysis_question": "先提供描述統計與資料品質摘要，再要求明確問題。",
+      "metric_definition": "不得自行發明企業KPI定義。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "匯入資料", "input": "CSV或Excel", "output": "原始資料表", "checkpoint": "檔案可讀且列欄數有紀錄"},
+    {"id": "P02", "action": "清理欄位", "input": "原始資料表", "output": "清理資料", "checkpoint": "型別、缺值、重複值已處理並留紀錄"},
+    {"id": "P03", "action": "執行描述統計", "input": "清理資料", "output": "統計摘要", "checkpoint": "主要數值可重算"},
+    {"id": "P04", "action": "建立圖表", "input": "統計摘要", "output": "至少三張圖表", "checkpoint": "標題、軸、單位與圖例完整"},
+    {"id": "P05", "action": "解讀發現", "input": ["統計摘要", "圖表"], "output": "洞察摘要", "checkpoint": "不超出資料證據"},
+    {"id": "P06", "action": "輸出報告", "input": "全部分析結果", "output": ["清理檔", "分析報告", "圖表"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "資料讀取與清理", "tool": "Python/pandas、試算表或等效工具", "required": true},
+    {"capability": "統計分析", "tool": "Python、R、試算表或等效工具", "required": true},
+    {"capability": "視覺化圖表", "tool": "Matplotlib、試算表圖表或等效工具", "required": true},
+    {"capability": "異常值與缺失值檢查", "tool": "資料分析工具", "required": true},
+    {"capability": "表格與摘要輸出", "tool": "試算表與文件工具", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "缺值比例過高", "then": "先量化缺值比例，標示風險，再依分析目的決定刪除、補值或保留。"},
+    {"if": "欄位格式異常", "then": "先標準化型別、日期、單位與編碼，再進行分析。"},
+    {"if": "結果不顯著或無明顯趨勢", "then": "忠實呈現，不過度推論。"},
+    {"if": "發現可能的異常值", "then": "先標示並進行敏感度檢查，不直接刪除。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得捏造數據。", "on_violation": "停止並回報。"},
+    {"severity": "critical", "rule": "結論不得超出資料證據。", "on_violation": "修正結論並標示限制。"},
+    {"severity": "critical", "rule": "涉及個資時必須依規則遮蔽或去識別。", "on_violation": "停止輸出明細。"},
+    {"severity": "major", "rule": "計算公式、單位與欄位定義需一致。"},
+    {"severity": "major", "rule": "分析過程需可重現。"},
+    {"severity": "major", "rule": "缺值與異常值處理需留下紀錄。"}
+  ],
+  "output_specification": {
+    "format": ["XLSX或CSV", "Markdown或DOCX或PDF", "PNG或等效圖表格式"],
+    "size_or_duration": "至少三張核心圖表與一份分析摘要",
+    "language": "繁體中文",
+    "brand": "若有提供品牌規範則套用",
+    "naming_rule": "VAC_DATA_001_v1.xlsx / VAC_DATA_001_report_v1.md",
+    "deliverables": ["清理資料檔", "至少三張圖表", "分析摘要與限制", "重點結論與建議"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "原始列數與清理後列數有紀錄", "severity": "major"},
+    {"criterion": "主要計算結果可重算", "severity": "critical"},
+    {"criterion": "缺值處理有說明", "severity": "major"},
+    {"criterion": "異常值處理有說明", "severity": "major"},
+    {"criterion": "至少三張核心圖表且標示完整", "severity": "major"},
+    {"criterion": "結論與數據一致", "severity": "critical"},
+    {"criterion": "無明顯公式或單位錯誤", "severity": "critical"},
+    {"criterion": "輸出檔案可正常開啟", "severity": "major"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "資料分析或業務負責人",
+    "stage": "高風險決策、個資資料、財務或醫療解讀正式發布前"
+  }
+}
