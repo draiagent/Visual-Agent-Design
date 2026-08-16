@@ -1,0 +1,42 @@
+{
+  "collection": "VAD Standard VAC Five-Pack",
+  "version": "1.0.0",
+  "schema": "../schemas/vac-8.schema.json",
+  "cards": [
+    {
+      "card_id": "VAC-VIDEO-001",
+      "title": "影片剪輯",
+      "human_readable": "video-editing-vac.md",
+      "machine_readable": "machine-readable/vac-video-001.json",
+      "recommended_route": "Workflow + VAC；需要動態敘事與重剪時升級 Intelligent Agent"
+    },
+    {
+      "card_id": "VAC-SLIDE-001",
+      "title": "簡報製作",
+      "human_readable": "slide-deck-vac.md",
+      "machine_readable": "machine-readable/vac-slide-001.json",
+      "recommended_route": "Workflow + VAC；需要動態故事線與圖表策略時升級 Intelligent Agent"
+    },
+    {
+      "card_id": "VAC-WEB-001",
+      "title": "網站生成",
+      "human_readable": "website-vac.md",
+      "machine_readable": "machine-readable/vac-web-001.json",
+      "recommended_route": "Workflow + VAC；需要動態資訊架構與技術決策時升級 Intelligent Agent"
+    },
+    {
+      "card_id": "VAC-DATA-001",
+      "title": "數據分析",
+      "human_readable": "data-analysis-vac.md",
+      "machine_readable": "machine-readable/vac-data-001.json",
+      "recommended_route": "Workflow + VAC；需要動態分析方法選擇時升級 Analysis Agent"
+    },
+    {
+      "card_id": "VAC-REPORT-001",
+      "title": "報告製作",
+      "human_readable": "report-vac.md",
+      "machine_readable": "machine-readable/vac-report-001.json",
+      "recommended_route": "Workflow + VAC；需要跨來源研究與衝突判斷時升級 Research / Analysis Agent"
+    }
+  ]
+}
