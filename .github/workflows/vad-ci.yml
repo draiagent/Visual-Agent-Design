@@ -1,0 +1,41 @@
+name: VAD CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependency
+        run: python -m pip install --upgrade pip jsonschema
+
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Validate Five-Pack VACs
+        run: |
+          python tools/vac_runner.py validate VAC-VIDEO-001
+          python tools/vac_runner.py validate VAC-SLIDE-001
+          python tools/vac_runner.py validate VAC-WEB-001
+          python tools/vac_runner.py validate VAC-DATA-001
+          python tools/vac_runner.py validate VAC-REPORT-001
+
+      - name: Routing smoke tests
+        run: |
+          python tools/vac_runner.py route "把影片剪成60秒短影音並加字幕"
+          python tools/vac_runner.py route "把資料整理成10頁PPTX簡報"
+          python tools/vac_runner.py route "建立RWD單頁網站"
+          python tools/vac_runner.py route "分析Excel並產出統計圖表"
+          python tools/vac_runner.py route "整理成正式DOCX報告"
