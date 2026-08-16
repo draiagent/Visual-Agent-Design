@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/draiagent/Visual-Agent-Design/blob/main/schemas/vac-8.schema.json",
+  "title": "Visual Agent Card VAC-8",
+  "type": "object",
+  "required": [
+    "task_goal",
+    "input_assets",
+    "process_flow",
+    "tools_capabilities",
+    "decision_rules",
+    "constraints",
+    "output_specification",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "card_id": {"type": "string"},
+    "version": {"type": "string"},
+    "task_goal": {
+      "type": "object",
+      "required": ["name", "primary_goal", "completion_definition"],
+      "properties": {
+        "name": {"type": "string"},
+        "primary_goal": {"type": "string"},
+        "target_user": {"type": "string"},
+        "completion_definition": {"type": "string"},
+        "priority": {"type": "string", "enum": ["low", "medium", "high", "critical"]}
+      },
+      "additionalProperties": true
+    },
+    "input_assets": {
+      "type": "object",
+      "properties": {
+        "required": {"type": "array", "items": {"type": "string"}},
+        "optional": {"type": "array", "items": {"type": "string"}},
+        "forbidden": {"type": "array", "items": {"type": "string"}},
+        "missing_asset_policy": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "process_flow": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["id", "action"],
+        "properties": {
+          "id": {"type": "string"},
+          "action": {"type": "string"},
+          "input": {"type": ["string", "array"]},
+          "output": {"type": ["string", "array"]},
+          "checkpoint": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "tools_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "capability": {"type": "string"},
+          "tool": {"type": "string"},
+          "required": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "decision_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["if", "then"],
+        "properties": {
+          "if": {"type": "string"},
+          "then": {"type": "string"},
+          "else": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "rule"],
+        "properties": {
+          "severity": {"type": "string", "enum": ["critical", "major", "minor"]},
+          "rule": {"type": "string"},
+          "on_violation": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "output_specification": {
+      "type": "object",
+      "properties": {
+        "format": {"type": ["string", "array"]},
+        "size_or_duration": {"type": "string"},
+        "language": {"type": "string"},
+        "brand": {"type": "string"},
+        "naming_rule": {"type": "string"},
+        "deliverables": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["criterion"],
+        "properties": {
+          "criterion": {"type": "string"},
+          "severity": {"type": "string", "enum": ["critical", "major", "minor"]},
+          "measure": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "human_review": {
+      "type": "object",
+      "properties": {
+        "required": {"type": "boolean"},
+        "role": {"type": "string"},
+        "stage": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
