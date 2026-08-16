@@ -1,0 +1,69 @@
+{
+  "card_id": "VAC-VIDEO-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "影片剪輯",
+    "primary_goal": "將提供的原始影片與素材製作成一支45至60秒、9:16的直式短影音。",
+    "target_user": "社群內容受眾",
+    "completion_definition": "輸出可正常播放的MP4，字幕、音畫、時長與品牌要求均通過驗收。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["原始影片素材"],
+    "optional": ["逐字稿或重點文案", "品牌Logo", "圖片或補畫面素材", "背景音樂", "字幕風格偏好"],
+    "forbidden": ["未授權素材", "與原始內容無關且未標示的虛構素材"],
+    "missing_asset_policy": {
+      "transcript": "若環境支援語音辨識則先轉錄，否則回報缺件。",
+      "logo": "可輸出無品牌預覽版，不得假造Logo。",
+      "music": "可輸出無背景音樂版本。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "讀取並檢查素材", "input": "全部輸入檔案", "output": "素材清單", "checkpoint": "原始影片可正常讀取"},
+    {"id": "P02", "action": "擷取主軸與有效片段", "input": ["原始影片", "逐字稿或語音"], "output": "剪輯主線", "checkpoint": "主題單一且清楚"},
+    {"id": "P03", "action": "建立粗剪", "input": "剪輯主線", "output": "粗剪版本", "checkpoint": "接近45至60秒"},
+    {"id": "P04", "action": "加入字幕與必要轉場", "input": ["粗剪版本", "校正文字"], "output": "字幕版本", "checkpoint": "字幕同步且兩行內可讀"},
+    {"id": "P05", "action": "配樂與音量平衡", "input": ["字幕版本", "背景音樂"], "output": "混音版本", "checkpoint": "人聲清楚且音樂不壓過人聲"},
+    {"id": "P06", "action": "輸出並完整檢查", "input": "混音版本", "output": "最終MP4", "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "影片剪輯", "tool": "FFmpeg或等效工具", "required": true},
+    {"capability": "語音辨識與字幕生成", "tool": "Whisper或等效工具", "required": false},
+    {"capability": "畫面裁切與重構", "tool": "影片或影像處理工具", "required": true},
+    {"capability": "音量正規化", "tool": "FFmpeg或等效工具", "required": true},
+    {"capability": "封面截圖", "tool": "影片截圖工具", "required": false}
+  ],
+  "decision_rules": [
+    {"if": "可用影片片段不足45至60秒", "then": "以核心片段搭配相關圖片或補畫面完成，不虛構原始事實。"},
+    {"if": "人聲不清楚", "then": "先降噪，再依可辨識語音產生字幕。"},
+    {"if": "字幕過長", "then": "壓縮為兩行內短句並保留原意。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得虛構原始內容或重要事實。", "on_violation": "停止並回報。"},
+    {"severity": "critical", "rule": "不得使用未授權素材。", "on_violation": "移除素材或停止輸出。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "major", "rule": "Logo不得變形。"},
+    {"severity": "major", "rule": "背景音樂不可蓋過人聲。"}
+  ],
+  "output_specification": {
+    "format": "MP4",
+    "size_or_duration": "1080x1920，9:16，45至60秒",
+    "language": "繁體中文",
+    "brand": "依提供的Logo與品牌規範",
+    "naming_rule": "VAC_VIDEO_001_v1.mp4",
+    "deliverables": ["最終直式短影音MP4"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "檔案可正常播放", "severity": "critical", "measure": "完整解碼播放成功"},
+    {"criterion": "字幕無明顯錯字且與語音同步", "severity": "major"},
+    {"criterion": "音畫同步", "severity": "major"},
+    {"criterion": "時長為45至60秒", "severity": "major"},
+    {"criterion": "主題清楚且與來源內容一致", "severity": "critical"},
+    {"criterion": "Logo位置與比例正確", "severity": "major"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "內容或品牌負責人",
+    "stage": "高風險內容、品牌正式發布或素材授權不明時"
+  }
+}
