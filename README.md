@@ -99,10 +99,33 @@ cd Visual-Agent-Design
 
 > **一張卡，讓人看懂；同一張卡，也讓 AI 能執行與驗收。**
 
-## 與 VAD-Promptless 的關係
+## Companion Projects｜延伸實作專案
 
-- **Visual Agent Design（本 Repo）**：母方法論與 Agent Framework。
-- **VAD-Promptless**：VAD 的 Promptless UX / Zero Prompting 實作策略之一。
+### VAD-Promptless
+
+[VAD-Promptless](https://github.com/draiagent/VAD-Promptless) is the Promptless UX and Self-Describing Visual Card implementation layer for Visual Agent Design.
+
+VAD-Promptless focuses on:
+
+- Zero Prompting for End Users
+- Promptless Skill / Workflow / Agent
+- Visual Card Parsing
+- Self-Describing Visual Card
+- Machine-readable Card
+- PNG Metadata / Sidecar JSON
+- SHA-256 Integrity
+- Promptless Execution
+
+> **Core methodology and standards are maintained only in this repository.**
+
+The following standards use **Visual-Agent-Design as the single source of truth**:
+
+- TRC-3D
+- VAC-8
+- Standard VAC Five-Pack
+- VAD Agent Blueprint
+- Routing / Execution / QA
+- Research Protocol
 
 ## License
 
