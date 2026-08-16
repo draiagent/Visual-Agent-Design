@@ -1,0 +1,73 @@
+{
+  "card_id": "VAC-WEB-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "網站生成",
+    "primary_goal": "建立一個可正常開啟、支援桌機與手機的單頁式響應網站。",
+    "target_user": "依輸入指定之網站受眾",
+    "completion_definition": "輸出網站檔案，主要區塊、導覽、CTA與RWD均通過驗收。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["公司或專案介紹", "產品或服務資料"],
+    "optional": ["品牌Logo", "品牌色與字型", "圖片素材", "聯絡資訊", "CTA文案", "參考網站或版型"],
+    "forbidden": ["未授權素材", "虛構公司或聯絡資訊"],
+    "missing_asset_policy": {
+      "main_content": "先建立精簡資訊架構並回報缺口，不虛構事實。",
+      "logo": "可輸出無品牌預覽版。",
+      "images": "以圖示、排版與純色區塊替代。",
+      "contact": "保留Contact區塊並標記待補。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "解析需求", "input": "全部輸入素材", "output": "網站需求摘要", "checkpoint": "受眾、目的與CTA清楚"},
+    {"id": "P02", "action": "建立資訊架構", "input": "需求摘要", "output": "區塊順序", "checkpoint": "內容主線完整"},
+    {"id": "P03", "action": "規劃頁面區塊", "input": ["內容", "品牌資料"], "output": "Wireframe", "checkpoint": "Hero、About、Services、Contact齊備"},
+    {"id": "P04", "action": "生成HTML、CSS與JavaScript", "input": "Wireframe", "output": "網站程式碼", "checkpoint": "可本機開啟"},
+    {"id": "P05", "action": "檢查響應式版面", "input": "網站程式碼", "output": "桌機與手機版", "checkpoint": "無重大跑版"},
+    {"id": "P06", "action": "輸出與驗收", "input": "完成版網站", "output": "ZIP網站檔案", "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "資訊架構與網站版型生成", "tool": "LLM或Web設計工具", "required": true},
+    {"capability": "HTML、CSS、JavaScript生成", "tool": "程式代理或編輯工具", "required": true},
+    {"capability": "圖片優化", "tool": "影像處理工具", "required": false},
+    {"capability": "導覽與CTA驗證", "tool": "瀏覽器或測試工具", "required": true},
+    {"capability": "RWD檢查", "tool": "瀏覽器裝置模擬或等效工具", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "內容不足", "then": "先產精簡單頁版本並明確標記待補資訊。"},
+    {"if": "圖片不足", "then": "以圖示、排版與純色區塊替代，不擅自使用未授權素材。"},
+    {"if": "手機版跑版", "then": "優先修正RWD再輸出。"},
+    {"if": "CTA缺乏實際連結", "then": "保留按鈕視覺但標記待補，不偽造連結。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得虛構公司、產品或聯絡資訊。", "on_violation": "移除虛構內容並回報。"},
+    {"severity": "critical", "rule": "不得使用未授權素材。", "on_violation": "替換或移除素材。"},
+    {"severity": "critical", "rule": "網站必須可正常開啟。", "on_violation": "修正程式或回報失敗。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "major", "rule": "手機版必須正常顯示。"},
+    {"severity": "major", "rule": "品牌Logo不得變形。"}
+  ],
+  "output_specification": {
+    "format": ["HTML", "CSS", "JavaScript", "ZIP"],
+    "size_or_duration": "單頁式響應網站，桌機與手機版",
+    "language": "繁體中文",
+    "brand": "依提供的Logo、品牌色與字型規範",
+    "naming_rule": "VAC_WEB_001_v1.zip",
+    "deliverables": ["網站原始碼", "可直接開啟的單頁網站ZIP"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "網頁可正常開啟", "severity": "critical"},
+    {"criterion": "桌機版顯示正常", "severity": "major"},
+    {"criterion": "手機版顯示正常", "severity": "critical"},
+    {"criterion": "主要導覽有效", "severity": "major"},
+    {"criterion": "CTA清楚且不誤導", "severity": "major"},
+    {"criterion": "無重大JavaScript或CSS錯誤", "severity": "critical"},
+    {"criterion": "品牌風格一致且Logo未變形", "severity": "major"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "網站或品牌負責人",
+    "stage": "正式部署、收集個資、付款或其他高影響功能上線前"
+  }
+}
