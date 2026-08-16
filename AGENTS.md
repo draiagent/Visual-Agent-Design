@@ -2,6 +2,8 @@
 
 本 Repository 使用 **Visual Agent Design（VAD）** 方法論。
 
+> **Visual-Agent-Design is the authoritative source for VAD Core standards. Companion projects must not redefine TRC-3D, VAC-8, the Standard VAC Five-Pack, or the VAD Agent Blueprint.**
+
 必讀順序：
 
 1. `AGENT.md`
@@ -24,6 +26,7 @@
 - 執行前檢查 Critical 素材；執行後依 Acceptance Criteria 驗收。
 - 不捏造缺失資料；高影響、不可逆或外部提交行為保留 Human Review。
 - 建立 Agent 架構時使用 VAD 十欄：GOAL、ROLE、SKILLS、TOOLS、KNOWLEDGE、WORKFLOW、DECISION、SUB-AGENTS、MCP/A2A、QA/GOVERNANCE。
+- 若 Companion Project（例如 `VAD-Promptless`）引用 VAD Core，應以本 Repository 的現行規格為準；不得在下游維護平行、衝突或過期的核心標準。
 
 標準工作流：
 
