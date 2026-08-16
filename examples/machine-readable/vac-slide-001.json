@@ -1,0 +1,72 @@
+{
+  "card_id": "VAC-SLIDE-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "簡報製作",
+    "primary_goal": "將提供的主題資料製作成一份10頁、16:9的專業簡報。",
+    "target_user": "依輸入指定之目標受眾",
+    "completion_definition": "輸出可正常開啟的PPTX與PDF，結構、品牌與內容均通過驗收。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["主題資料與重點文字"],
+    "optional": ["品牌Logo", "圖片或圖示素材", "色彩與字型規範", "參考版型", "目標受眾資訊"],
+    "forbidden": ["未授權素材", "無來源且被當成事實的數據"],
+    "missing_asset_policy": {
+      "logo": "可輸出無品牌預覽版，不得假造Logo。",
+      "images": "以合法圖示、圖表或結構化排版替代。",
+      "brand_guideline": "採保守專業中性版型。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "讀取需求", "input": "全部輸入素材", "output": "任務摘要", "checkpoint": "主題、受眾與用途清楚"},
+    {"id": "P02", "action": "整理架構", "input": "任務摘要", "output": "10頁故事線", "checkpoint": "有開場、主體與結論"},
+    {"id": "P03", "action": "撰寫大綱", "input": "故事線", "output": "每頁標題與重點", "checkpoint": "每頁聚焦單一主要訊息"},
+    {"id": "P04", "action": "配置圖文", "input": ["頁面大綱", "圖片或圖示", "Logo"], "output": "初版簡報", "checkpoint": "圖文比例合理"},
+    {"id": "P05", "action": "統一版型", "input": ["初版簡報", "品牌規範"], "output": "品牌版簡報", "checkpoint": "色彩、字級與留白一致"},
+    {"id": "P06", "action": "輸出並檢查", "input": "品牌版簡報", "output": ["PPTX", "PDF"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "內容整理", "tool": "LLM或等效工具", "required": true},
+    {"capability": "簡報版面設計", "tool": "PPTX生成工具或等效方案", "required": true},
+    {"capability": "圖表製作", "tool": "試算表、Python或等效工具", "required": false},
+    {"capability": "圖片優化", "tool": "影像處理工具", "required": false},
+    {"capability": "PPT與PDF輸出", "tool": "簡報與PDF輸出工具", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "內容過長", "then": "拆成多頁並保留主線，不把全文塞進單頁。"},
+    {"if": "缺少圖片", "then": "以圖示、圖表、數據視覺或結構化排版替代。"},
+    {"if": "品牌規範不完整", "then": "採保守專業版型，避免自行創造品牌色。"},
+    {"if": "來源資料彼此衝突", "then": "標示衝突並回報，不自行定論。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得捏造來源資料、引用或數據。", "on_violation": "停止使用該內容並回報。"},
+    {"severity": "critical", "rule": "輸出檔案必須可正常開啟。", "on_violation": "重新輸出或回報失敗。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "major", "rule": "每頁聚焦單一主要訊息。"},
+    {"severity": "major", "rule": "內容來源需可追溯。"},
+    {"severity": "minor", "rule": "動畫與裝飾保持克制。"}
+  ],
+  "output_specification": {
+    "format": ["PPTX", "PDF"],
+    "size_or_duration": "16:9，10頁",
+    "language": "繁體中文",
+    "brand": "依提供的Logo、色彩與字型規範",
+    "naming_rule": "VAC_SLIDE_001_v1.pptx / VAC_SLIDE_001_v1.pdf",
+    "deliverables": ["10頁PPTX", "對應PDF"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "PPTX與PDF皆可正常開啟", "severity": "critical"},
+    {"criterion": "頁數為10頁", "severity": "major"},
+    {"criterion": "整體結構清楚", "severity": "major"},
+    {"criterion": "無明顯繁體中文錯字", "severity": "major"},
+    {"criterion": "品牌風格一致", "severity": "major"},
+    {"criterion": "圖文配置平衡且字級可讀", "severity": "major"},
+    {"criterion": "來源與數據未被虛構", "severity": "critical"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "簡報或品牌負責人",
+    "stage": "正式對外發布、投資人簡報或高風險內容時"
+  }
+}
