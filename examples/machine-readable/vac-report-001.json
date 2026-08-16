@@ -1,0 +1,75 @@
+{
+  "card_id": "VAC-REPORT-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "報告製作",
+    "primary_goal": "將會議逐字稿、背景資料與參考文件整理成一份5至8頁正式報告。",
+    "target_user": "依輸入指定之決策者或專業讀者",
+    "completion_definition": "輸出可正常開啟的DOCX與PDF，包含摘要、分析、建議與行動項目，且無虛構引用。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["會議逐字稿或主要來源資料", "背景資料"],
+    "optional": ["參考文件", "報告模板", "品牌Logo", "目標讀者與用途", "引用格式要求"],
+    "forbidden": ["虛構引用", "未標示來源且被寫成事實的推測"],
+    "missing_asset_policy": {
+      "primary_source": "缺主要來源資料即停止。",
+      "background": "可先整理來源內容，但需明確標記資訊邊界。",
+      "template": "採中性專業報告版型。",
+      "logo": "輸出無品牌版，不得假造Logo。",
+      "citation": "標記待補，不得虛構引用。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "閱讀資料", "input": "全部來源", "output": "來源清單", "checkpoint": "來源可追溯"},
+    {"id": "P02", "action": "萃取重點", "input": "來源資料", "output": "重點摘要", "checkpoint": "關鍵資訊未遺漏"},
+    {"id": "P03", "action": "建立章節", "input": ["重點摘要", "讀者與用途"], "output": "報告架構", "checkpoint": "摘要、分析、建議、行動項目齊備"},
+    {"id": "P04", "action": "撰寫內容", "input": ["報告架構", "來源資料"], "output": "初稿", "checkpoint": "每項主要主張有來源依據"},
+    {"id": "P05", "action": "統一格式", "input": ["初稿", "模板或品牌規範"], "output": "完整版", "checkpoint": "標題、表格、引用與格式一致"},
+    {"id": "P06", "action": "輸出與審核", "input": "完整版", "output": ["DOCX", "PDF"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "摘要與資訊萃取", "tool": "LLM或等效工具", "required": true},
+    {"capability": "結構化長文撰寫", "tool": "文件生成工具", "required": true},
+    {"capability": "表格與行動項目整理", "tool": "文件或試算表工具", "required": false},
+    {"capability": "引用與註記管理", "tool": "引用管理或文件工具", "required": true},
+    {"capability": "DOCX與PDF輸出", "tool": "文件生成與轉檔工具", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "資訊重複", "then": "合併並精簡，但保留不同來源的重要差異。"},
+    {"if": "缺乏依據", "then": "標記待補或限制，不以推測補成事實。"},
+    {"if": "篇幅過長", "then": "優先保留摘要、關鍵發現、建議與行動項目。"},
+    {"if": "不同來源互相衝突", "then": "並列呈現差異與來源，不自行消除衝突。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不可虛構引用、數據或來源。", "on_violation": "移除或標記待補並回報。"},
+    {"severity": "critical", "rule": "不可把推測寫成已確認事實。", "on_violation": "改寫為限制或待確認項目。"},
+    {"severity": "critical", "rule": "DOCX與PDF必須可正常開啟。", "on_violation": "重新輸出或回報失敗。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "major", "rule": "章節標題需清楚且來源可追溯。"},
+    {"severity": "major", "rule": "建議必須具體且可執行。"}
+  ],
+  "output_specification": {
+    "format": ["DOCX", "PDF"],
+    "size_or_duration": "5至8頁",
+    "language": "繁體中文",
+    "brand": "若提供品牌Logo或模板則套用",
+    "naming_rule": "VAC_REPORT_001_v1.docx / VAC_REPORT_001_v1.pdf",
+    "deliverables": ["正式DOCX報告", "對應PDF", "摘要、分析、建議與行動項目"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "DOCX與PDF可正常開啟", "severity": "critical"},
+    {"criterion": "報告結構完整", "severity": "major"},
+    {"criterion": "關鍵資訊完整", "severity": "major"},
+    {"criterion": "無明顯繁體中文錯字", "severity": "major"},
+    {"criterion": "無虛構引用或來源", "severity": "critical"},
+    {"criterion": "建議具體可執行", "severity": "major"},
+    {"criterion": "行動項目可被指派或追蹤", "severity": "major"},
+    {"criterion": "格式一致", "severity": "minor"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "報告負責人或專業審查者",
+    "stage": "正式對外發布、法律、醫療、財務或其他高風險內容前"
+  }
+}
