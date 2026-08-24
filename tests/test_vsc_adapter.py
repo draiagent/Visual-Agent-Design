@@ -76,8 +76,8 @@ class VscAdapterTest(unittest.TestCase):
 
     def test_unmapped_project_type_is_refused(self):
         manifest = dict(self.manifest)
-        manifest["project"] = dict(manifest["project"], type="comic")
-        path = ROOT / "tests" / "_tmp_comic.vsc.json"
+        manifest["project"] = dict(manifest["project"], type="brand-kit")
+        path = ROOT / "tests" / "_tmp_unmapped.vsc.json"
         path.write_text(json.dumps(manifest, ensure_ascii=False), encoding="utf-8")
         try:
             with self.assertRaises(vsc_adapter.AdapterError) as ctx:
@@ -112,6 +112,17 @@ class VscAdapterTest(unittest.TestCase):
         self.assertIn("4", rules)
         on_violation = " ".join(c.get("on_violation", "") for c in card["constraints"])
         self.assertIn("不得無限迴圈", on_violation)
+
+    def test_infographic_and_comic_compile_from_vsc(self):
+        for project_type, expected in (("infographic-card", "VAC-INFOGRAPHIC-001"),
+                                       ("comic", "VAC-COMIC-001")):
+            with self.subTest(project_type=project_type):
+                manifest = dict(self.manifest,
+                                project=dict(self.manifest["project"], type=project_type),
+                                skills=["storytelling", "infographic", "image-generation"])
+                card = vsc_adapter.adapt(manifest, load_card(expected))
+                self.assertEqual(card["card_id"], expected + "-VSC")
+                self.assertEqual(vac_runner.basic_validate(card), [])
 
     def test_compiled_card_plans_and_wraps_in_an_envelope(self):
         card = vsc_adapter.compile_manifest(MANIFEST, load_card)

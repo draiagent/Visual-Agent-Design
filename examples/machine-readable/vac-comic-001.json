@@ -1,0 +1,76 @@
+{
+  "card_id": "VAC-COMIC-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "漫畫筆記製作",
+    "primary_goal": "把複雜知識轉成分鏡漫畫筆記，遮住文字只看畫面也能理解。",
+    "target_user": "需要快速理解該知識的學習者",
+    "completion_definition": "輸出結構化Storyboard與對應圖像，QA總分達85且無Hard Fail。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["要轉成漫畫筆記的主題、教材或文章"],
+    "optional": ["指定格數（4/6/8）", "角色或吉祥物設定", "品牌token或風格需求", "資料來源", "目標受眾"],
+    "forbidden": ["未授權素材", "無來源且被當成事實的知識或數據"],
+    "missing_asset_policy": {
+      "panel_count": "依知識點數量決定，3個知識點用4格、4至5個用6格或8格。",
+      "character": "使用中性角色，不假造真實人物形象。",
+      "brand_guideline": "Storyboard階段不決定畫風，交由後續產製決定。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "定義學習目標與核心問題", "input": "主題或教材", "output": "學習目標與核心問題", "checkpoint": "看完能回答哪一個具體問題"},
+    {"id": "P02", "action": "萃取關鍵知識點", "input": "主題或教材", "output": "3至5個關鍵知識點", "checkpoint": "數量落在3至5之間且彼此不重疊"},
+    {"id": "P03", "action": "轉成視覺隱喻", "input": "關鍵知識點", "output": "概念與隱喻對照", "checkpoint": "每個抽象概念都有可畫的具體隱喻"},
+    {"id": "P04", "action": "建立Storyboard", "input": ["隱喻對照", "格數"], "output": "4/6/8格分鏡", "checkpoint": "一格一重點、每格都有可觀察的場景或動作"},
+    {"id": "P05", "action": "執行QA", "input": "Storyboard", "output": "QA評分與修正建議", "checkpoint": "總分達85、知識正確性與遮字可理解性皆達門檻"},
+    {"id": "P06", "action": "生成圖像並輸出", "input": ["通過QA的Storyboard", "風格設定"], "output": ["Storyboard JSON", "漫畫圖像"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "知識拆解與費曼轉譯", "tool": "LLM或等效工具", "required": true},
+    {"capability": "視覺隱喻設計", "tool": "LLM或等效工具", "required": true},
+    {"capability": "分鏡結構化輸出", "tool": "VAD-Comic-Notes storyboard schema或等效方案", "required": true},
+    {"capability": "AI圖像生成", "tool": "圖像生成模型、Figma或Design Agent", "required": false},
+    {"capability": "QA評分", "tool": "VAD-Comic-Notes rubric或等效評分表", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "QA未達85或出現Hard Fail", "then": "先修Storyboard再重新評分，不得直接進入圖像生成。"},
+    {"if": "抽象概念找不到可畫的隱喻", "then": "停下來重找隱喻，不硬畫成文字說明框。"},
+    {"if": "關鍵知識點超過5個", "then": "拆成多篇漫畫筆記，不擠進同一組分鏡。"},
+    {"if": "主要知識靠對白承載", "then": "重新設計畫面，讓畫面本身承載知識。"},
+    {"if": "知識來源彼此衝突", "then": "標示衝突並回報，不自行定論。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得出現知識錯誤或誤導性簡化。", "on_violation": "停止並回報，重新查證後再畫。"},
+    {"severity": "critical", "rule": "QA未達85或有Hard Fail不得交付。", "on_violation": "退回P04修正分鏡。"},
+    {"severity": "critical", "rule": "不得捏造來源、引用或數據。", "on_violation": "停止使用該內容並回報。"},
+    {"severity": "major", "rule": "一格只講一個主要概念。", "on_violation": "拆格重做。"},
+    {"severity": "major", "rule": "遮住文字仍能大致理解整組分鏡。", "on_violation": "重新設計畫面。"},
+    {"severity": "major", "rule": "Storyboard階段只描述畫面裡發生什麼事，不描述畫風、配色、光影或材質。", "on_violation": "移除風格描述，交由後續產製決定。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "minor", "rule": "對白精簡，只作補充。"}
+  ],
+  "output_specification": {
+    "format": ["JSON", "PNG"],
+    "size_or_duration": "4、6或8格",
+    "language": "繁體中文",
+    "brand": "依提供的風格或品牌設定，Storyboard階段不預設畫風",
+    "naming_rule": "VAC_COMIC_001_v1.storyboard.json / VAC_COMIC_001_v1_01.png ...",
+    "deliverables": ["結構化Storyboard JSON", "各格漫畫圖像"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "知識正確性達門檻", "severity": "critical", "measure": "Knowledge Accuracy >= 17/20"},
+    {"criterion": "遮住文字仍可理解", "severity": "critical", "measure": "Textless Comprehension >= 17/20"},
+    {"criterion": "QA總分達門檻", "severity": "critical", "measure": "Total >= 85/100"},
+    {"criterion": "關鍵知識點為3至5個", "severity": "major"},
+    {"criterion": "一格一重點且每格有可觀察的場景或動作", "severity": "major"},
+    {"criterion": "分鏡具備前後因果或敘事順序", "severity": "major"},
+    {"criterion": "對白只是補充，不是主要知識載體", "severity": "major"},
+    {"criterion": "無明顯繁體中文錯字", "severity": "minor"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "領域專家或內容負責人",
+    "stage": "涉及醫療、投資、法律或其他專業建議時"
+  }
+}

@@ -1,6 +1,8 @@
-# VAD Standard VAC Five-Pack｜五張可直接執行的 Visual Agent Cards
+# VAD Standard VAC｜可直接執行的 Visual Agent Cards
 
-這個資料夾提供 Visual Agent Design（VAD）第一組標準化執行型任務卡，對應五種常見 AI 工作：影片、簡報、網站、數據與報告。
+這個資料夾提供 Visual Agent Design（VAD）的標準化執行型任務卡。
+**Five-Pack** 是第一組具名標準，對應五種常見 AI 工作：影片、簡報、網站、數據與報告；
+**Extended** 是後續加入的標準卡，地位相同但不併入 Five-Pack 這個名稱。
 
 每張卡同時提供兩種形式：
 
@@ -17,7 +19,14 @@
 | VAC-DATA-001 | 數據分析 | `data-analysis-vac.md` | `machine-readable/vac-data-001.json` | Workflow / Analysis Agent |
 | VAC-REPORT-001 | 報告製作 | `report-vac.md` | `machine-readable/vac-report-001.json` | Workflow / Research Agent |
 
-完整機器索引：`cards-manifest.json`。
+## Extended
+
+| Card ID | 任務 | Markdown | JSON | 建議路由 |
+|---|---|---|---|---|
+| VAC-INFOGRAPHIC-001 | 資訊圖卡製作 | `infographic-card-vac.md` | `machine-readable/vac-infographic-001.json` | Workflow + VAC |
+| VAC-COMIC-001 | 漫畫筆記製作 | `comic-notes-vac.md` | `machine-readable/vac-comic-001.json` | Workflow + VAC |
+
+完整機器索引：`cards-manifest.json`，每張卡帶 `tier: core` 或 `tier: extended`。
 
 ---
 

@@ -17,8 +17,17 @@ class FivePackTest(unittest.TestCase):
         self.manifest = vac_runner.load_manifest()
         self.cards = self.manifest["cards"]
 
-    def test_exactly_five_standard_cards(self):
-        self.assertEqual(len(self.cards), 5)
+    def test_five_pack_still_has_exactly_five_core_cards(self):
+        """The Standard VAC Five-Pack is a named standard. Extended cards must not
+        dilute it: adding a card means adding it at tier "extended"."""
+        core = [c for c in self.cards if c.get("tier") == "core"]
+        self.assertEqual(len(core), 5)
+        self.assertEqual(self.manifest["core_collection"], "VAD Standard VAC Five-Pack")
+
+    def test_every_card_declares_a_known_tier(self):
+        for card in self.cards:
+            with self.subTest(card_id=card["card_id"]):
+                self.assertIn(card.get("tier"), {"core", "extended"})
 
     def test_unique_card_ids(self):
         ids = [card["card_id"] for card in self.cards]
@@ -59,6 +68,26 @@ class FivePackTest(unittest.TestCase):
     def test_route_report(self):
         matches = vac_runner.route_task("將會議紀錄整理成正式DOCX報告")
         self.assertEqual(matches[0][0], "VAC-REPORT-001")
+
+    def test_route_infographic(self):
+        matches = vac_runner.route_task("把這個框架做成一系列資訊圖卡懶人包")
+        self.assertEqual(matches[0][0], "VAC-INFOGRAPHIC-001")
+
+    def test_route_comic(self):
+        matches = vac_runner.route_task("用六格漫畫解釋這個概念")
+        self.assertEqual(matches[0][0], "VAC-COMIC-001")
+
+    def test_extended_cards_do_not_steal_core_routes(self):
+        """Adding keywords must not break the five core routes."""
+        for task, expected in (
+            ("把這支影片剪輯成60秒短影音並加字幕", "VAC-VIDEO-001"),
+            ("把資料整理成10頁PPTX簡報", "VAC-SLIDE-001"),
+            ("建立RWD單頁網站並輸出HTML CSS JavaScript", "VAC-WEB-001"),
+            ("分析Excel資料並產出統計圖表", "VAC-DATA-001"),
+            ("將會議紀錄整理成正式DOCX報告", "VAC-REPORT-001"),
+        ):
+            with self.subTest(task=task):
+                self.assertEqual(vac_runner.route_task(task)[0][0], expected)
 
     def test_plan_contains_execution_contract(self):
         path = vac_runner.card_path("VAC-DATA-001")

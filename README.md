@@ -67,7 +67,13 @@ Agent 執行
 
 > **TRC-3D 決定「怎麼做」；VAC-8 定義「這次任務怎麼交付」；VAD Agent Blueprint 定義「Agent 本身怎麼設計」。**
 
-## Standard VAC Five-Pack
+## Standard VAC Registry
+
+註冊表分兩層：**Core** 為具名標準 Standard VAC Five-Pack（五張，名稱與內容不變），
+**Extended** 為後續加入的標準卡（`VAC-INFOGRAPHIC-001` 資訊圖卡、`VAC-COMIC-001` 漫畫筆記）。
+兩層在執行、驗證與路由上地位相同，詳見 `CARD-REGISTRY.md`。
+
+### Standard VAC Five-Pack
 
 | Card ID | 任務 |
 |---|---|

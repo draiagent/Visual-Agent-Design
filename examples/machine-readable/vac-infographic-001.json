@@ -1,0 +1,77 @@
+{
+  "card_id": "VAC-INFOGRAPHIC-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "資訊圖卡製作",
+    "primary_goal": "把一個知識點、框架或SOP轉成一頁一重點、可滑動閱讀的圖卡系列。",
+    "target_user": "依輸入指定之目標受眾，預設為手機滑閱讀者",
+    "completion_definition": "輸出每張圖卡與合輯檔案，一張一重點、遮住文字仍可理解，且通過全部驗收項目。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["要圖解的知識點、框架或流程內容"],
+    "optional": ["品牌token或色彩字型規範", "吉祥物或插圖素材", "平台與尺寸需求", "資料來源", "目標張數"],
+    "forbidden": ["未授權素材", "無來源且被當成事實的數據"],
+    "missing_asset_policy": {
+      "brand_guideline": "採中性高對比版型，不自行創造品牌色。",
+      "images": "以圖解結構、圖示與排版替代，不硬塞裝飾性圖片。",
+      "platform": "預設1:1，並在交付時說明所採尺寸。",
+      "target_count": "依內容自然拆分，不為湊張數灌水。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "讀取需求", "input": "全部輸入素材", "output": "任務摘要", "checkpoint": "主題、受眾、平台與張數清楚"},
+    {"id": "P02", "action": "拆解重點", "input": "任務摘要", "output": "每張一個重點的清單", "checkpoint": "一張一重點，沒有兩個概念擠在同一張"},
+    {"id": "P03", "action": "編排敘事", "input": "重點清單", "output": "起承轉合序列", "checkpoint": "首張有鉤子，末張有明確收尾或行動"},
+    {"id": "P04", "action": "設計圖解", "input": "敘事序列", "output": "每張的圖解結構", "checkpoint": "遮住文字仍能看懂該張在講什麼"},
+    {"id": "P05", "action": "套用風格與品牌", "input": ["圖解結構", "品牌token", "風格包"], "output": "品牌版圖卡", "checkpoint": "色彩、字級與留白一致且未違反風格禁用項"},
+    {"id": "P06", "action": "輸出並檢查", "input": "品牌版圖卡", "output": ["每張圖檔", "合輯PDF"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "內容拆解與重點萃取", "tool": "LLM或等效工具", "required": true},
+    {"capability": "資訊圖解與圖表結構", "tool": "向量繪圖或等效方案", "required": true},
+    {"capability": "版面輸出", "tool": "設計工具、HTML轉圖或等效方案", "required": true},
+    {"capability": "AI圖像生成", "tool": "圖像生成模型或等效方案", "required": false},
+    {"capability": "資料視覺化", "tool": "試算表、Python或等效工具", "required": false},
+    {"capability": "文字校對", "tool": "校對工具或等效方案", "required": true}
+  ],
+  "decision_rules": [
+    {"if": "單張內容過多", "then": "拆成多張並保留敘事順序，不縮小字級硬塞。"},
+    {"if": "缺少可用圖片", "then": "以圖解結構、圖示與排版替代，不放無意義的裝飾圖。"},
+    {"if": "未指定平台或尺寸", "then": "預設1:1並於交付時說明。"},
+    {"if": "數據找不到來源", "then": "標示為待查證，不當成事實呈現。"},
+    {"if": "品牌規範不完整", "then": "採中性高對比版型，不自行創造品牌色。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得捏造來源資料、引用或數據。", "on_violation": "停止使用該內容並回報。"},
+    {"severity": "critical", "rule": "輸出檔案必須可正常開啟。", "on_violation": "重新輸出或回報失敗。"},
+    {"severity": "major", "rule": "一張圖卡只講一個重點。", "on_violation": "拆張重做。"},
+    {"severity": "major", "rule": "遮住文字後，圖解仍要看得懂該張在講什麼。", "on_violation": "重新設計該張的圖解結構。"},
+    {"severity": "major", "rule": "內文在手機一臂距離需可讀，不得為了塞字縮到不可讀。", "on_violation": "刪字或拆張，不縮字級。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "minor", "rule": "裝飾與特效保持克制，不干擾閱讀。"}
+  ],
+  "output_specification": {
+    "format": ["PNG", "PDF"],
+    "size_or_duration": "預設1:1，依平台可改4:5或16:9",
+    "language": "繁體中文",
+    "brand": "依提供的品牌token、色彩與字型規範",
+    "naming_rule": "VAC_INFOGRAPHIC_001_v1_01.png ...（依序編號）與 VAC_INFOGRAPHIC_001_v1.pdf",
+    "deliverables": ["每張圖卡圖檔", "合輯PDF"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "每張圖卡只有一個重點", "severity": "major"},
+    {"criterion": "遮住文字後仍能理解每張的主旨", "severity": "major", "measure": "逐張遮字檢視"},
+    {"criterion": "首張有鉤子，末張有收尾或行動", "severity": "major"},
+    {"criterion": "內文字級在手機一臂距離可讀", "severity": "major"},
+    {"criterion": "無明顯繁體中文錯字", "severity": "major"},
+    {"criterion": "整體風格與品牌一致", "severity": "major"},
+    {"criterion": "所有數據與引用皆有可追溯來源", "severity": "critical"},
+    {"criterion": "輸出檔案皆可正常開啟", "severity": "critical"}
+  ],
+  "human_review": {
+    "required": false,
+    "role": "內容或品牌負責人",
+    "stage": "對外發布、涉及專業建議或高風險主題時"
+  }
+}

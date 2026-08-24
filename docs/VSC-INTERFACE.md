@@ -11,7 +11,7 @@ VSC Project Manifest
         │
         ▼
 tools/vsc_adapter.py        ← 本接口
-        │  以 Five-Pack 標準卡為底，疊上 manifest
+        │  以註冊表中的標準卡為底，疊上 manifest
         ▼
      VAC-8 Card
         │
@@ -51,7 +51,9 @@ YAML manifest 需要 PyYAML；JSON 只用標準函式庫。
 | `video` | `VAC-VIDEO-001` |
 | `dashboard` | `VAC-DATA-001` |
 | `report` | `VAC-REPORT-001` |
-| `infographic-card`、`comic`、`brand-kit`、`social` | **尚無標準卡** |
+| `infographic-card` | `VAC-INFOGRAPHIC-001`（Extended） |
+| `comic` | `VAC-COMIC-001`（Extended） |
+| `brand-kit`、`social` | **尚無標準卡** |
 
 沒有對照的類型，接口會以 exit code 2 拒絕並要求走 TRC-3D 建立或 fork 一張卡，
 **不會自己猜一張最接近的**。要新增對照，先建卡並登錄到 `CARD-REGISTRY.md`，

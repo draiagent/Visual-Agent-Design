@@ -30,7 +30,7 @@ tools/
 
 ## 1. 先選一個任務
 
-VAD 目前提供五張標準執行卡：
+VAD 的 Five-Pack 提供五張核心標準執行卡：
 
 | 任務 | Card ID | 主要檔案 |
 |---|---|---|
@@ -39,6 +39,13 @@ VAD 目前提供五張標準執行卡：
 | 網站生成 | `VAC-WEB-001` | `examples/website-vac.md` |
 | 數據分析 | `VAC-DATA-001` | `examples/data-analysis-vac.md` |
 | 報告製作 | `VAC-REPORT-001` | `examples/report-vac.md` |
+
+另有兩張 Extended 標準卡，用法完全相同：
+
+| 任務 | Card ID | 主要檔案 |
+|---|---|---|
+| 資訊圖卡製作 | `VAC-INFOGRAPHIC-001` | `examples/infographic-card-vac.md` |
+| 漫畫筆記製作 | `VAC-COMIC-001` | `examples/comic-notes-vac.md` |
 
 機器可讀版本位於：
 

@@ -42,6 +42,8 @@ ROUTE_KEYWORDS = {
     "VAC-WEB-001": ["網站", "網頁", "html", "css", "javascript", "rwd", "landing page", "web"],
     "VAC-DATA-001": ["數據", "資料分析", "excel", "csv", "統計", "圖表", "kpi", "data"],
     "VAC-REPORT-001": ["報告", "docx", "正式文件", "會議紀錄", "摘要", "研究報告", "report"],
+    "VAC-INFOGRAPHIC-001": ["圖卡", "資訊圖", "輪播", "carousel", "懶人包", "圖解", "infographic", "貼文圖"],
+    "VAC-COMIC-001": ["漫畫", "分鏡", "四格", "六格", "八格", "storyboard", "comic", "圖像小說"],
 }
 
 

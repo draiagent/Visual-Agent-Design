@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Visual Skill Composer (VSC) inbound adapter.
 
-Reads a VSC Project Manifest and compiles it onto a Standard Five-Pack VAC,
+Reads a VSC Project Manifest and compiles it onto a registered Standard VAC,
 producing a VAC-8 card that the existing runner can plan, validate and execute.
 
     VSC manifest  ->  [this adapter]  ->  VAC-8 card  ->  plan / envelope
@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any
 
 # --- VSC project type -> Standard VAC ---------------------------------------
-# Only the Five-Pack exists as a standard card. Anything else must go through
+# Only registered Standard VACs are mapped. Anything else must go through
 # TRC-3D and get its own card; this adapter refuses to guess.
 CARD_BY_PROJECT = {
     "academic-presentation": "VAC-SLIDE-001",
@@ -30,6 +30,8 @@ CARD_BY_PROJECT = {
     "video": "VAC-VIDEO-001",
     "dashboard": "VAC-DATA-001",
     "report": "VAC-REPORT-001",
+    "infographic-card": "VAC-INFOGRAPHIC-001",
+    "comic": "VAC-COMIC-001",
 }
 
 UNMAPPED_HINT = (

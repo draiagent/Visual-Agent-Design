@@ -32,6 +32,11 @@ jobs:
           python tools/vac_runner.py validate VAC-DATA-001
           python tools/vac_runner.py validate VAC-REPORT-001
 
+      - name: Validate Extended VACs
+        run: |
+          python tools/vac_runner.py validate VAC-INFOGRAPHIC-001
+          python tools/vac_runner.py validate VAC-COMIC-001
+
       - name: VSC interface smoke tests
         run: |
           python tools/vac_runner.py vsc examples/vsc/academic-presentation.vsc.json
@@ -44,3 +49,5 @@ jobs:
           python tools/vac_runner.py route "建立RWD單頁網站"
           python tools/vac_runner.py route "分析Excel並產出統計圖表"
           python tools/vac_runner.py route "整理成正式DOCX報告"
+          python tools/vac_runner.py route "把這個框架做成一系列資訊圖卡懶人包"
+          python tools/vac_runner.py route "用六格漫畫解釋這個概念"
