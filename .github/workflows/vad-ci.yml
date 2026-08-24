@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install validation dependency
-        run: python -m pip install --upgrade pip jsonschema
+        run: python -m pip install --upgrade pip jsonschema pyyaml
 
       - name: Run regression tests
         run: python -m unittest discover -s tests -p 'test_*.py' -v
@@ -31,6 +31,11 @@ jobs:
           python tools/vac_runner.py validate VAC-WEB-001
           python tools/vac_runner.py validate VAC-DATA-001
           python tools/vac_runner.py validate VAC-REPORT-001
+
+      - name: VSC interface smoke tests
+        run: |
+          python tools/vac_runner.py vsc examples/vsc/academic-presentation.vsc.json
+          python tools/vac_runner.py vsc examples/vsc/academic-presentation.vsc.json --envelope
 
       - name: Routing smoke tests
         run: |

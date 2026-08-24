@@ -16,6 +16,7 @@ Visual Agent Design（VAD）不是單一提示詞、單一 Skill，也不是單�
 - `templates/TRC-3D.md` — AI Task Routing Cube
 - `templates/VAC-8.md` — Visual Agent Card 八區標準
 - `research/RESEARCH-PROTOCOL.md` — 可重複研究程序
+- `docs/VSC-INTERFACE.md` — 讀取 Visual Skill Composer manifest 的入站接口
 
 ## 核心架構
 
@@ -100,6 +101,17 @@ cd Visual-Agent-Design
 > **一張卡，讓人看懂；同一張卡，也讓 AI 能執行與驗收。**
 
 ## Companion Projects｜延伸實作專案
+
+### Visual Skill Composer（VSC）
+
+[Visual Skill Composer](https://github.com/draiagent/visual-skill-composer) 是 VAD 的**上游**：
+使用者在 VSC 用視覺化方式選出專案需要的技能、風格、品牌與品質門檻，產出 Project Manifest，
+由本 repo 的 `tools/vac_runner.py vsc` 編譯成標準 VAC-8 卡後執行。
+
+> **VSC 決定「要帶哪些工具出門」；VAD 決定「這些工具怎麼完成工作」。**
+
+接口規格見 `docs/VSC-INTERFACE.md`。VSC 的專案包／技能／風格包以 VSC repo 為準，
+VAC-8 與 Five-Pack 仍以本 repo 為唯一事實來源。
 
 ### VAD-Promptless
 

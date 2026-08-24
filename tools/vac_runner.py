@@ -10,6 +10,8 @@ Usage:
   python tools/vac_runner.py validate examples/machine-readable/vac-data-001.json
   python tools/vac_runner.py plan examples/machine-readable/vac-video-001.json
   python tools/vac_runner.py envelope examples/machine-readable/vac-report-001.json
+  python tools/vac_runner.py vsc examples/vsc/academic-presentation.vsc.json
+  python tools/vac_runner.py vsc plan.vsc.yaml --packs ../visual-skill-composer --envelope
 """
 
 from __future__ import annotations
@@ -236,6 +238,28 @@ def cmd_envelope(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_vsc(args: argparse.Namespace) -> int:
+    import vsc_adapter
+
+    packs = Path(args.packs).resolve() if args.packs else None
+    try:
+        card = vsc_adapter.compile_manifest(
+            Path(args.manifest), lambda cid: load_json(card_path(cid)), packs
+        )
+    except vsc_adapter.AdapterError as exc:
+        print(json.dumps({"compiled": False, "error": str(exc)}, ensure_ascii=False, indent=2), file=sys.stderr)
+        return 2
+
+    errors = basic_validate(card)
+    if errors:
+        print(json.dumps({"compiled": False, "errors": errors}, ensure_ascii=False, indent=2), file=sys.stderr)
+        return 1
+
+    payload = execution_envelope(card) if args.envelope else card
+    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Visual Agent Design VAC runner")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -252,10 +276,22 @@ def build_parser() -> argparse.ArgumentParser:
         subparser = sub.add_parser(name, help=help_text)
         subparser.add_argument("card")
         subparser.set_defaults(func=func)
+    p_vsc = sub.add_parser("vsc", help="Compile a VSC Project Manifest into a VAC-8 card")
+    p_vsc.add_argument("manifest", help="Path to a .vsc.json or .vsc.yaml manifest")
+    p_vsc.add_argument("--packs", help="Path to a visual-skill-composer checkout, to resolve the style pack")
+    p_vsc.add_argument("--envelope", action="store_true", help="Emit a cross-model execution envelope instead of the card")
+    p_vsc.set_defaults(func=cmd_vsc)
     return parser
 
 
 def main() -> int:
+    # Cards are written in Traditional Chinese and printed with ensure_ascii=False.
+    # On a console whose default encoding is not UTF-8 (Windows cp950 for example)
+    # redirecting that output corrupts it, so pin the streams.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8")
     parser = build_parser()
     args = parser.parse_args()
     try:

@@ -28,6 +28,10 @@
 - 建立 Agent 架構時使用 VAD 十欄：GOAL、ROLE、SKILLS、TOOLS、KNOWLEDGE、WORKFLOW、DECISION、SUB-AGENTS、MCP/A2A、QA/GOVERNANCE。
 - 若 Companion Project（例如 `VAD-Promptless`）引用 VAD Core，應以本 Repository 的現行規格為準；不得在下游維護平行、衝突或過期的核心標準。
 
+若任務來自 Visual Skill Composer（VSC）的 Project Manifest，先用 
+`python tools/vac_runner.py vsc <manifest>` 編譯成 VAC-8 卡再進入標準工作流；
+不得跳過驗證直接執行 manifest。接口規格見 `docs/VSC-INTERFACE.md`。
+
 標準工作流：
 
 ```text
