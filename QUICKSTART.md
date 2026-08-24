@@ -46,6 +46,7 @@ VAD 的 Five-Pack 提供五張核心標準執行卡：
 |---|---|---|
 | 資訊圖卡製作 | `VAC-INFOGRAPHIC-001` | `examples/infographic-card-vac.md` |
 | 漫畫筆記製作 | `VAC-COMIC-001` | `examples/comic-notes-vac.md` |
+| 社群貼文製作 | `VAC-SOCIAL-001` | `examples/social-post-vac.md` |
 
 機器可讀版本位於：
 

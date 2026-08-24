@@ -25,6 +25,7 @@
 |---|---|---|---|---|
 | VAC-INFOGRAPHIC-001 | 資訊圖卡製作 | `infographic-card-vac.md` | `machine-readable/vac-infographic-001.json` | Workflow + VAC |
 | VAC-COMIC-001 | 漫畫筆記製作 | `comic-notes-vac.md` | `machine-readable/vac-comic-001.json` | Workflow + VAC |
+| VAC-SOCIAL-001 | 社群貼文製作 | `social-post-vac.md` | `machine-readable/vac-social-001.json` | Workflow + VAC，發布前必經 Human Review |
 
 完整機器索引：`cards-manifest.json`，每張卡帶 `tier: core` 或 `tier: extended`。
 

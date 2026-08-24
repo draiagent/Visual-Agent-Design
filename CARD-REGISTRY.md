@@ -23,6 +23,7 @@
 |---|---|---|---|---|
 | `VAC-INFOGRAPHIC-001` | 資訊圖卡製作 | `examples/infographic-card-vac.md` | `examples/machine-readable/vac-infographic-001.json` | Workflow + VAC |
 | `VAC-COMIC-001` | 漫畫筆記製作 | `examples/comic-notes-vac.md` | `examples/machine-readable/vac-comic-001.json` | Workflow + VAC |
+| `VAC-SOCIAL-001` | 社群貼文製作 | `examples/social-post-vac.md` | `examples/machine-readable/vac-social-001.json` | Workflow + VAC，發布前必經 Human Review |
 
 機器索引：`examples/cards-manifest.json`（每張卡帶 `tier: core` 或 `tier: extended`）。
 
@@ -59,6 +60,11 @@
 當任務要求漫畫、分鏡、四／六／八格、storyboard 或「用畫的解釋某個概念」時，優先載入 `VAC-COMIC-001`。
 實作可搭配 companion repository [`draiagent/VAD-Comic-Notes-Skill`](https://github.com/draiagent/VAD-Comic-Notes-Skill)，
 其 storyboard schema 與 QA rubric 以該 repo 為準。
+
+### 社群貼文 → VAC-SOCIAL-001
+
+當任務要求社群貼文、IG／Threads／Facebook／LinkedIn 圖文、限動或跨平台改版時，優先載入 `VAC-SOCIAL-001`。
+此卡 `human_review.required` 為 `true`：產製可自動化，**發布不可以**。
 
 ---
 

@@ -36,6 +36,7 @@ jobs:
         run: |
           python tools/vac_runner.py validate VAC-INFOGRAPHIC-001
           python tools/vac_runner.py validate VAC-COMIC-001
+          python tools/vac_runner.py validate VAC-SOCIAL-001
 
       - name: VSC interface smoke tests
         run: |
@@ -51,3 +52,4 @@ jobs:
           python tools/vac_runner.py route "整理成正式DOCX報告"
           python tools/vac_runner.py route "把這個框架做成一系列資訊圖卡懶人包"
           python tools/vac_runner.py route "用六格漫畫解釋這個概念"
+          python tools/vac_runner.py route "做一則Threads社群貼文"

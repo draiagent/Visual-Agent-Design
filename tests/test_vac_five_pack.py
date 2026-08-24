@@ -77,6 +77,21 @@ class FivePackTest(unittest.TestCase):
         matches = vac_runner.route_task("用六格漫畫解釋這個概念")
         self.assertEqual(matches[0][0], "VAC-COMIC-001")
 
+    def test_route_social(self):
+        matches = vac_runner.route_task("做一則Threads社群貼文")
+        self.assertEqual(matches[0][0], "VAC-SOCIAL-001")
+
+    def test_social_and_infographic_stay_distinguishable(self):
+        """Both cards make visuals for a feed; the wording has to separate them."""
+        self.assertEqual(
+            vac_runner.route_task("把這個框架做成一系列圖解懶人包")[0][0],
+            "VAC-INFOGRAPHIC-001",
+        )
+        self.assertEqual(
+            vac_runner.route_task("幫我寫一則Instagram社群貼文與文案")[0][0],
+            "VAC-SOCIAL-001",
+        )
+
     def test_extended_cards_do_not_steal_core_routes(self):
         """Adding keywords must not break the five core routes."""
         for task, expected in (

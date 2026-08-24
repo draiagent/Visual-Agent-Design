@@ -32,6 +32,7 @@ CARD_BY_PROJECT = {
     "report": "VAC-REPORT-001",
     "infographic-card": "VAC-INFOGRAPHIC-001",
     "comic": "VAC-COMIC-001",
+    "social": "VAC-SOCIAL-001",
 }
 
 UNMAPPED_HINT = (

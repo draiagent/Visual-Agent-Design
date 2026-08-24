@@ -1,0 +1,78 @@
+{
+  "card_id": "VAC-SOCIAL-001",
+  "version": "1.0",
+  "task_goal": {
+    "name": "社群貼文製作",
+    "primary_goal": "依平台規格產出社群貼文的視覺與文案，前兩行就留住讀者。",
+    "target_user": "依輸入指定之目標受眾，預設為在動態牆快速滑動的讀者",
+    "completion_definition": "輸出各指定平台尺寸的圖檔與對應文案，通過全部驗收項目。",
+    "priority": "high"
+  },
+  "input_assets": {
+    "required": ["貼文主題或要傳達的訊息"],
+    "optional": ["平台清單", "品牌token或色彩字型規範", "圖像素材", "指定CTA", "hashtag策略", "目標受眾", "資料來源"],
+    "forbidden": ["未授權素材", "無來源且被當成事實的數據", "未經同意的個人資訊或肖像"],
+    "missing_asset_policy": {
+      "platform": "預設Instagram 1:1，並在交付時說明所採平台與尺寸。",
+      "brand_guideline": "採中性高對比版型，不自行創造品牌色。",
+      "cta": "依貼文目的補一個明確行動，不留空。",
+      "images": "以排版、圖示與色塊替代，不使用來源不明的圖片。"
+    }
+  },
+  "process_flow": [
+    {"id": "P01", "action": "讀取需求", "input": "全部輸入素材", "output": "任務摘要", "checkpoint": "主題、平台、受眾與貼文目的清楚"},
+    {"id": "P02", "action": "決定平台與尺寸", "input": "任務摘要", "output": "平台與尺寸清單", "checkpoint": "每個平台的比例與安全區已確定"},
+    {"id": "P03", "action": "撰寫文案", "input": ["任務摘要", "CTA"], "output": "主文案與平台變體", "checkpoint": "前兩行有鉤子且有明確CTA"},
+    {"id": "P04", "action": "設計視覺", "input": ["文案", "尺寸清單", "圖像素材"], "output": "各尺寸視覺", "checkpoint": "重要元素都在安全區內"},
+    {"id": "P05", "action": "套用品牌", "input": ["各尺寸視覺", "品牌token"], "output": "品牌版貼文", "checkpoint": "色彩、字級與留白一致"},
+    {"id": "P06", "action": "輸出並檢查", "input": "品牌版貼文", "output": ["各尺寸圖檔", "文案檔"], "checkpoint": "全部Acceptance Criteria通過"}
+  ],
+  "tools_capabilities": [
+    {"capability": "社群文案撰寫", "tool": "LLM或等效工具", "required": true},
+    {"capability": "版面輸出", "tool": "設計工具、HTML轉圖或等效方案", "required": true},
+    {"capability": "文字校對", "tool": "校對工具或等效方案", "required": true},
+    {"capability": "品牌token套用", "tool": "設計系統或Design Token工具", "required": false},
+    {"capability": "AI圖像生成", "tool": "圖像生成模型或等效方案", "required": false}
+  ],
+  "decision_rules": [
+    {"if": "未指定平台", "then": "預設Instagram 1:1並於交付時說明。"},
+    {"if": "同一內容要跨多個平台", "then": "依各平台重新排版與改寫文案，不把同一張圖硬套所有尺寸。"},
+    {"if": "文案過長", "then": "拆成貼文本文與留言補充，不縮小字級硬塞。"},
+    {"if": "缺少CTA", "then": "依貼文目的補一個明確行動，不留空。"},
+    {"if": "素材授權或肖像同意不明", "then": "停止使用該素材並回報，不先做再確認。"},
+    {"if": "數據找不到來源", "then": "標示為待查證，不當成事實呈現。"}
+  ],
+  "constraints": [
+    {"severity": "critical", "rule": "不得捏造來源資料、引用或數據。", "on_violation": "停止使用該內容並回報。"},
+    {"severity": "critical", "rule": "不得使用未授權素材，或未經同意的個人資訊與肖像。", "on_violation": "移除該素材並回報。"},
+    {"severity": "critical", "rule": "輸出檔案必須可正常開啟。", "on_violation": "重新輸出或回報失敗。"},
+    {"severity": "major", "rule": "重要文字與元素必須落在平台安全區內，不被介面元件或裁切遮住。", "on_violation": "重新排版該尺寸。"},
+    {"severity": "major", "rule": "文案前兩行必須能留住讀者，不用開場白浪費。", "on_violation": "重寫開頭。"},
+    {"severity": "major", "rule": "使用繁體中文。"},
+    {"severity": "minor", "rule": "hashtag克制且與內容相關，不堆砌無關標籤。"}
+  ],
+  "output_specification": {
+    "format": ["PNG", "TXT"],
+    "size_or_duration": "依平台：Instagram 1:1或4:5、限動9:16、Facebook 1.91:1、LinkedIn 1.91:1、Threads 1:1",
+    "language": "繁體中文",
+    "brand": "依提供的品牌token、色彩與字型規範",
+    "naming_rule": "VAC_SOCIAL_001_v1_{platform}.png 與 VAC_SOCIAL_001_v1_{platform}.txt",
+    "deliverables": ["各平台尺寸圖檔", "各平台文案檔"]
+  },
+  "acceptance_criteria": [
+    {"criterion": "每個指定平台都有對應尺寸的圖檔與文案", "severity": "major"},
+    {"criterion": "重要元素未被安全區外的裁切或介面元件遮住", "severity": "major", "measure": "逐平台套安全區檢視"},
+    {"criterion": "文案前兩行具備鉤子", "severity": "major"},
+    {"criterion": "有明確且與貼文目的一致的CTA", "severity": "major"},
+    {"criterion": "無明顯繁體中文錯字", "severity": "major"},
+    {"criterion": "整體風格與品牌一致", "severity": "major"},
+    {"criterion": "所有數據與引用皆有可追溯來源", "severity": "critical"},
+    {"criterion": "所有素材的授權與肖像同意已確認", "severity": "critical"},
+    {"criterion": "輸出檔案皆可正常開啟", "severity": "critical"}
+  ],
+  "human_review": {
+    "required": true,
+    "role": "內容或品牌負責人",
+    "stage": "對外發布前。本卡只負責產製，實際發布屬於不可逆的外部行為，一律由人決定。"
+  }
+}

@@ -113,9 +113,10 @@ class VscAdapterTest(unittest.TestCase):
         on_violation = " ".join(c.get("on_violation", "") for c in card["constraints"])
         self.assertIn("不得無限迴圈", on_violation)
 
-    def test_infographic_and_comic_compile_from_vsc(self):
+    def test_extended_project_types_compile_from_vsc(self):
         for project_type, expected in (("infographic-card", "VAC-INFOGRAPHIC-001"),
-                                       ("comic", "VAC-COMIC-001")):
+                                       ("comic", "VAC-COMIC-001"),
+                                       ("social", "VAC-SOCIAL-001")):
             with self.subTest(project_type=project_type):
                 manifest = dict(self.manifest,
                                 project=dict(self.manifest["project"], type=project_type),
@@ -123,6 +124,14 @@ class VscAdapterTest(unittest.TestCase):
                 card = vsc_adapter.adapt(manifest, load_card(expected))
                 self.assertEqual(card["card_id"], expected + "-VSC")
                 self.assertEqual(vac_runner.basic_validate(card), [])
+
+    def test_social_keeps_human_review_after_compiling(self):
+        """Publishing is irreversible: a manifest must not be able to switch it off."""
+        manifest = dict(self.manifest,
+                        project=dict(self.manifest["project"], type="social"),
+                        skills=["storytelling", "brand-system"])
+        card = vsc_adapter.adapt(manifest, load_card("VAC-SOCIAL-001"))
+        self.assertTrue(card["human_review"]["required"])
 
     def test_compiled_card_plans_and_wraps_in_an_envelope(self):
         card = vsc_adapter.compile_manifest(MANIFEST, load_card)

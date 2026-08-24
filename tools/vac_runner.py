@@ -44,6 +44,7 @@ ROUTE_KEYWORDS = {
     "VAC-REPORT-001": ["報告", "docx", "正式文件", "會議紀錄", "摘要", "研究報告", "report"],
     "VAC-INFOGRAPHIC-001": ["圖卡", "資訊圖", "輪播", "carousel", "懶人包", "圖解", "infographic", "貼文圖"],
     "VAC-COMIC-001": ["漫畫", "分鏡", "四格", "六格", "八格", "storyboard", "comic", "圖像小說"],
+    "VAC-SOCIAL-001": ["社群", "貼文", "instagram", "ig ", "threads", "facebook", "linkedin", "限動", "小紅書", "social post"],
 }
 
 

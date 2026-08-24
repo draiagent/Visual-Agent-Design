@@ -53,7 +53,8 @@ YAML manifest 需要 PyYAML；JSON 只用標準函式庫。
 | `report` | `VAC-REPORT-001` |
 | `infographic-card` | `VAC-INFOGRAPHIC-001`（Extended） |
 | `comic` | `VAC-COMIC-001`（Extended） |
-| `brand-kit`、`social` | **尚無標準卡** |
+| `social` | `VAC-SOCIAL-001`（Extended） |
+| `brand-kit` | **尚無標準卡** |
 
 沒有對照的類型，接口會以 exit code 2 拒絕並要求走 TRC-3D 建立或 fork 一張卡，
 **不會自己猜一張最接近的**。要新增對照，先建卡並登錄到 `CARD-REGISTRY.md`，

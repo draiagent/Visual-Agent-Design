@@ -59,6 +59,14 @@
       "human_readable": "comic-notes-vac.md",
       "machine_readable": "machine-readable/vac-comic-001.json",
       "recommended_route": "Workflow + VAC；實作可搭配 draiagent/VAD-Comic-Notes-Skill"
+    },
+    {
+      "card_id": "VAC-SOCIAL-001",
+      "title": "社群貼文製作",
+      "tier": "extended",
+      "human_readable": "social-post-vac.md",
+      "machine_readable": "machine-readable/vac-social-001.json",
+      "recommended_route": "Workflow + VAC；發布前一律保留 Human Review"
     }
   ]
 }
