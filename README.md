@@ -106,6 +106,19 @@ cd Visual-Agent-Design
 
 > **一張卡，讓人看懂；同一張卡，也讓 AI 能執行與驗收。**
 
+### 核心原則｜High Intelligence for Discovery, Low Cost for Execution
+
+> **第一次用高階 AI「學會」，之後讓低成本 Agent「重複做好」。**
+> **高智能負責探索，低成本負責規模化執行。**
+
+VAD 因此同時承擔三種功能：
+
+1. **Visual Requirement Interface**：用圖像降低人與 Agent 的溝通成本。
+2. **Reusable Task Specification**：把成功任務固化成 VAC / Skill，供後續重複執行。
+3. **Cost-Aware Intelligence Routing**：已知任務交給低階模型執行；只有未知任務才升級高階模型。
+
+這比「企業全面使用最強 AI 模型」更符合 AI to Agent 的商業邏輯——探索階段用最強模型換取正確性，執行階段用最省成本的模型換取規模化。
+
 ## Companion Projects｜延伸實作專案
 
 ### Visual Skill Composer（VSC）
