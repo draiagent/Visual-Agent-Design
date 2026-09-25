@@ -1,0 +1,18 @@
+name: Repo Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  repo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: 名稱／授權／版本／徽章／tag 一致性檢查
+        run: python .github/scripts/repo-check.py . --name "${{ github.event.repository.name }}" --tags
